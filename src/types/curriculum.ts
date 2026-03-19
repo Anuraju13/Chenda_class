@@ -1,3 +1,21 @@
+// ─── RhythmCard — Beat-by-beat breakdown ──────────────────────────────────────
+// Shows each syllable of a pattern as an individual card with its strike type.
+// Used in the RhythmCard component for Lesson 1.
+export interface RhythmBeat {
+  ml: string;     // Malayalam syllable, e.g. "ത", "കി", "ധിം"
+  en: string;     // Latin transliteration, e.g. "Tha", "ki", "DHIM"
+  type: string;   // Strike type label, e.g. "Stick", "Hand/Tap", "Power Strike"
+}
+
+export interface RhythmPattern {
+  title: string;      // e.g. "Essential Pattern 1"
+  subtitle: string;   // e.g. "Basic Shingari Ennam (Chempada)"
+  cycleName: string;  // e.g. "8 BEAT CYCLE"
+  beats: RhythmBeat[];
+  emphasis: string;   // Instruction shown in the Emphasis tip card
+  targetSpeed: string; // Instruction shown in the Target Speed tip card
+}
+
 // ─── Vaythari (rhythmic chant) ────────────────────────────────────────────────
 // Each lesson can have multiple vaythari patterns, e.g. slow version + fast version
 export interface VaythariItem {
@@ -23,6 +41,7 @@ export interface Lesson {
   vaythari: VaythariItem[];
   bpmRange: BpmRange;
   durationMinutes?: number;
+  rhythmPatterns?: RhythmPattern[]; // Optional — only lessons that need beat breakdown have this
 }
 
 // ─── Module ───────────────────────────────────────────────────────────────────

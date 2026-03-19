@@ -36,6 +36,7 @@ import { YouTubePlayer } from './YouTubePlayer';
 import { PlaybackController } from './PlaybackController';
 import { VaythariCard } from './VaythariCard';
 import { Metronome } from './Metronome';
+import { RhythmCard } from './RhythmCard';
 import type { Lesson } from '@/types/curriculum';
 
 // The element ID that YouTube's IFrame API will target.
@@ -108,6 +109,11 @@ export function LessonView({ lesson }: LessonViewProps) {
             maxBpm={160}
           />
         </div>
+
+        {/* 4. Beat-by-beat RhythmCard — only shown for lessons that have rhythm patterns */}
+        {lesson.rhythmPatterns && lesson.rhythmPatterns.length > 0 && (
+          <RhythmCard patterns={lesson.rhythmPatterns} />
+        )}
 
       </div>
     </div>

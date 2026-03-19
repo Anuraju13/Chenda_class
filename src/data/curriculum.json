@@ -11,7 +11,7 @@
           "id": "lesson-1",
           "title": "Introduction to Chenda",
           "malayalamTitle": "ചെണ്ട പരിചയം",
-          "youtubeId": "REPLACE_WITH_YOUR_YOUTUBE_VIDEO_ID",
+          "youtubeId": "https://www.youtube.com/shorts/WL-iKce14o0",
           "description": "Learn the basic anatomy of the Chenda drum, how to hold the sticks (Kol), and the correct striking position.",
           "durationMinutes": 12,
           "bpmRange": { "min": 60, "max": 80 },
@@ -27,6 +27,26 @@
               "text": "തകധിമി",
               "transliteration": "Tha-Ka-Dhi-Mi",
               "tempo": "slow"
+            }
+          ],
+          "rhythmPatterns": [
+            {
+              "title": "Essential Pattern 1",
+              "subtitle": "Basic Shingari Ennam (Chempada)",
+              "cycleName": "8 BEAT CYCLE",
+              "beats": [
+                { "ml": "ത", "en": "Tha", "type": "Stick" },
+                { "ml": "കി", "en": "ki", "type": "Hand/Tap" },
+                { "ml": "ട്ട", "en": "tta", "type": "Stick" },
+                { "ml": "ത", "en": "Tha", "type": "Stick" },
+                { "ml": "കി", "en": "ki", "type": "Hand/Tap" },
+                { "ml": "ട്ട", "en": "tta", "type": "Stick" },
+                { "ml": "ധിം", "en": "DHIM", "type": "Power Strike" },
+                { "ml": "തക", "en": "thaka", "type": "Filler" },
+                { "ml": "തക", "en": "thaka", "type": "Filler" }
+              ],
+              "emphasis": "Focus on the DHIM. It should be the loudest point of the cycle.",
+              "targetSpeed": "Start at 80 BPM. Increase to 120 for Shingari speed."
             }
           ]
         },

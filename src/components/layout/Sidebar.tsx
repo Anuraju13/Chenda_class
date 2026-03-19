@@ -28,7 +28,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ChevronDown, ChevronRight, BookOpen, Music, Zap, Star, Drum } from 'lucide-react';
+import { ChevronDown, ChevronRight, BookOpen, Music, Zap, Star, Disc3 } from 'lucide-react';
 import type { Curriculum } from '@/types/curriculum';
 
 interface SidebarProps {
@@ -75,7 +75,7 @@ export function Sidebar({ curriculum, activeModuleId, activeLessonId }: SidebarP
       {/* ── Brand Header ──────────────────────────────────────────────────── */}
       <div className="border-b border-slate-800 px-5 py-5">
         <div className="flex items-center gap-2.5">
-          <Drum className="h-6 w-6 text-amber-500" />
+          <Disc3 className="h-6 w-6 text-amber-500" />
           <div>
             {/* Chenda Class in Malayalam — uses Manjari font */}
             <h1 className="font-malayalam text-lg font-bold leading-tight text-amber-400">
