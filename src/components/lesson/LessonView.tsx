@@ -96,8 +96,10 @@ export function LessonView({ lesson }: LessonViewProps) {
 
         {/* 1. YouTube Player — key forces a fresh div when lesson changes,
               preventing React's DOM reconciler from colliding with YouTube's
-              iframe replacement of the original div. */}
-        <YouTubePlayer playerId={PLAYER_ID} key={lesson.id} />
+              iframe replacement of the original div.
+              videoId is passed so YouTubePlayer can show a placeholder for
+              lessons that don't have a video yet. */}
+        <YouTubePlayer playerId={PLAYER_ID} videoId={lesson.youtubeId} key={lesson.id} />
 
         {/* 2. Playback Speed Controller */}
         <PlaybackController onRateChange={handleRateChange} currentRate={currentRate} />

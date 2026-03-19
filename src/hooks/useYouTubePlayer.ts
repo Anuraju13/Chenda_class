@@ -70,6 +70,12 @@ export function useYouTubePlayer(elementId: string, videoId: string) {
   }, []);
 
   useEffect(() => {
+    // ── Guard: skip for placeholder or missing video IDs ─────────────────────
+    // Lessons without a real YouTube video yet have "REPLACE_WITH_..." as the ID.
+    // Passing that to YouTube's API throws an uncaught "Invalid video id" error
+    // which crashes the entire React tree. We bail out early instead.
+    if (!videoId || videoId.startsWith('REPLACE_')) return;
+
     // ── Step 1: Load the YouTube API script (only once) ──────────────────────
     // We check for an existing script tag with id='yt-iframe-api' to prevent
     // loading the script twice if the user navigates between lessons.
@@ -83,22 +89,27 @@ export function useYouTubePlayer(elementId: string, videoId: string) {
 
     // ── Step 2: Initialize the player ────────────────────────────────────────
     const initPlayer = () => {
-      playerRef.current = new window.YT.Player(elementId, {
-        videoId,
-        playerVars: {
-          enablejsapi: 1,      // CRITICAL: must be 1 for setPlaybackRate to work
-          origin: window.location.origin, // Required for postMessage security — YouTube validates this
-          rel: 0,              // Don't show related videos from other channels
-          modestbranding: 1,   // Smaller YouTube logo
-          color: 'white',      // White progress bar (looks better on dark background)
-        },
-        events: {
-          onReady: () => {
-            // Player is ready. We could auto-play here, but we'll let the user decide.
-            console.log('YouTube player ready');
+      // Wrap in try/catch — YouTube's API throws synchronously for bad IDs
+      // and that error would otherwise crash React's render tree.
+      try {
+        playerRef.current = new window.YT.Player(elementId, {
+          videoId,
+          playerVars: {
+            enablejsapi: 1,      // CRITICAL: must be 1 for setPlaybackRate to work
+            origin: window.location.origin, // Required for postMessage security
+            rel: 0,              // Don't show related videos from other channels
+            modestbranding: 1,   // Smaller YouTube logo
+            color: 'white',      // White progress bar (looks better on dark background)
           },
-        },
-      });
+          events: {
+            onReady: () => {
+              console.log('YouTube player ready');
+            },
+          },
+        });
+      } catch (e) {
+        console.warn('YouTube player failed to initialize:', e);
+      }
     };
 
     // ── Step 3: Handle the race condition ─────────────────────────────────────
