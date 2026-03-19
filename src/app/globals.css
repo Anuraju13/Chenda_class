@@ -1,0 +1,51 @@
+/*
+  Tailwind CSS directives — these three lines are replaced at build time
+  with all of Tailwind's utility classes. Order matters:
+  base → resets, components → reusable patterns, utilities → single-purpose classes
+*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Set the default background and text color for the whole app */
+  body {
+    @apply bg-slate-950 text-slate-100;
+  }
+}
+
+@layer utilities {
+  /*
+    Custom thin scrollbar for the sidebar.
+    'scrollbar-width: thin' is the Firefox way.
+    The ::-webkit-scrollbar rules handle Chrome/Edge/Safari.
+  */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #334155 transparent; /* slate-700 thumb on transparent track */
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: #334155;
+    border-radius: 2px;
+  }
+}
+
+/*
+  Style the range (slider) input to use our amber accent color.
+  'accent-color' is a modern CSS property supported in all modern browsers.
+  It colors the thumb and track in one line.
+*/
+input[type='range'] {
+  accent-color: #f59e0b; /* amber-500 */
+  cursor: pointer;
+  width: 100%;
+}

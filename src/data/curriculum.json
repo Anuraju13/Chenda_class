@@ -1,0 +1,147 @@
+{
+  "modules": [
+    {
+      "id": "aadyapaadam",
+      "title": "Aadyapaadam",
+      "malayalamTitle": "ആദ്യപാദം",
+      "level": "Foundations",
+      "color": "amber",
+      "lessons": [
+        {
+          "id": "lesson-1",
+          "title": "Introduction to Chenda",
+          "malayalamTitle": "ചെണ്ട പരിചയം",
+          "youtubeId": "REPLACE_WITH_YOUR_YOUTUBE_VIDEO_ID",
+          "description": "Learn the basic anatomy of the Chenda drum, how to hold the sticks (Kol), and the correct striking position.",
+          "durationMinutes": 12,
+          "bpmRange": { "min": 60, "max": 80 },
+          "vaythari": [
+            {
+              "label": "Single Strike",
+              "text": "തക",
+              "transliteration": "Tha-Ka",
+              "tempo": "slow"
+            },
+            {
+              "label": "Basic 4-Beat",
+              "text": "തകധിമി",
+              "transliteration": "Tha-Ka-Dhi-Mi",
+              "tempo": "slow"
+            }
+          ]
+        },
+        {
+          "id": "lesson-2",
+          "title": "The Foundational Pattern",
+          "malayalamTitle": "അടിസ്ഥാന താളം",
+          "youtubeId": "REPLACE_WITH_YOUR_YOUTUBE_VIDEO_ID",
+          "description": "The 8-beat core pattern (Thakitta Tarikita) that forms the backbone of all Shingari Melam.",
+          "durationMinutes": 18,
+          "bpmRange": { "min": 60, "max": 100 },
+          "vaythari": [
+            {
+              "label": "Core 8-Beat Pattern",
+              "text": "തക്കിട്ട തരികിട",
+              "transliteration": "Thak-Kit-ta  Ta-ri-ki-ta",
+              "tempo": "slow"
+            },
+            {
+              "label": "With Continuity",
+              "text": "തക്കിട്ട തരികിട | തക്കിട്ട തരികിട",
+              "transliteration": "Thak-Kit-ta Ta-ri-ki-ta | Thak-Kit-ta Ta-ri-ki-ta",
+              "tempo": "medium"
+            }
+          ]
+        },
+        {
+          "id": "lesson-3",
+          "title": "Wrist Technique & Finger Control",
+          "malayalamTitle": "കൈത്തണ്ടയുടെ ചലനം",
+          "youtubeId": "REPLACE_WITH_YOUR_YOUTUBE_VIDEO_ID",
+          "description": "Master the circular wrist motion that gives Chenda its distinctive sound. Use the 0.5× slow-motion player to study the technique closely.",
+          "durationMinutes": 15,
+          "bpmRange": { "min": 50, "max": 90 },
+          "vaythari": [
+            {
+              "label": "Right-Hand Lead",
+              "text": "ദ്ദിം കിട",
+              "transliteration": "Ddim  Ki-ta",
+              "tempo": "slow"
+            },
+            {
+              "label": "Alternating Hands",
+              "text": "ദ്ദിം കിട തരിദ്ദ",
+              "transliteration": "Ddim Ki-ta  Ta-ri-dda",
+              "tempo": "medium"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shingari-level-1",
+      "title": "Shingari Level 1",
+      "malayalamTitle": "ശിങ്കാരി — ഒന്ന്",
+      "level": "Basics",
+      "color": "orange",
+      "lessons": [
+        {
+          "id": "lesson-1",
+          "title": "Shingari Thaalam — The Entry",
+          "malayalamTitle": "ശിങ്കാരി താളം",
+          "youtubeId": "REPLACE_WITH_YOUR_YOUTUBE_VIDEO_ID",
+          "description": "Learn the signature Shingari entry pattern played during the Melam procession. Focus on the rhythmic feel (laya) at 80 BPM.",
+          "durationMinutes": 20,
+          "bpmRange": { "min": 80, "max": 120 },
+          "vaythari": [
+            {
+              "label": "Entry Pattern",
+              "text": "തകജണു തകധിമി",
+              "transliteration": "Tha-Ka-Ja-Nu  Tha-Ka-Dhi-Mi",
+              "tempo": "medium"
+            },
+            {
+              "label": "Full Cycle",
+              "text": "തകജണു തകധിമി | തക്കിട്ട തരികിട",
+              "transliteration": "Tha-Ka-Ja-Nu Tha-Ka-Dhi-Mi | Thak-Kit-ta Ta-ri-ki-ta",
+              "tempo": "medium"
+            }
+          ]
+        },
+        {
+          "id": "lesson-2",
+          "title": "First Kaalathaalam — Kizha Kaalam",
+          "malayalamTitle": "കീഴ്ക്കാലം",
+          "youtubeId": "REPLACE_WITH_YOUR_YOUTUBE_VIDEO_ID",
+          "description": "Kizha Kaalam is the slow foundational tempo of the Melam. Learn to play at a steady 80 BPM with full control before speeding up.",
+          "durationMinutes": 25,
+          "bpmRange": { "min": 80, "max": 100 },
+          "vaythari": [
+            {
+              "label": "Kizha Kaalam Pattern",
+              "text": "തക്കിട്ട | തരികിട | ദ്ദിം കിട | തരിദ്ദ",
+              "transliteration": "Thak-Kit-ta | Ta-ri-ki-ta | Ddim Ki-ta | Ta-ri-dda",
+              "tempo": "slow"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shingari-level-2",
+      "title": "Shingari Level 2",
+      "malayalamTitle": "ശിങ്കാരി — രണ്ട്",
+      "level": "Speed & Ennams",
+      "color": "red",
+      "lessons": []
+    },
+    {
+      "id": "performance",
+      "title": "Performance",
+      "malayalamTitle": "അവതരണം",
+      "level": "Kalasams",
+      "color": "purple",
+      "lessons": []
+    }
+  ]
+}
