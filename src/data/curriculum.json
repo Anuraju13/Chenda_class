@@ -63,116 +63,57 @@
         },
         {
           "id": "lesson-2",
-          "title": "The Foundational Pattern",
-          "malayalamTitle": "അടിസ്ഥാന താളം",
-          "youtubeId": "REPLACE_WITH_YOUR_YOUTUBE_VIDEO_ID",
-          "description": "The 8-beat core pattern (Thakitta Tarikita) that forms the backbone of all Shingari Melam.",
-          "durationMinutes": 18,
+          "title": "Tharikida Kidathaki",
+          "malayalamTitle": "തരികിട കിടതകി",
+          "youtubeId": "https://www.youtube.com/shorts/eFLci07_eG8",
+          "description": "The foundational 8-syllable cycle of Chenda. Chant the vaythari aloud in sync with the beat before you play — feel the rhythm in your voice first.",
+          "durationMinutes": 15,
           "bpmRange": { "min": 60, "max": 100 },
           "vaythari": [
             {
-              "label": "Core 8-Beat Pattern",
-              "text": "തക്കിട്ട തരികിട",
-              "transliteration": "Thak-Kit-ta  Ta-ri-ki-ta",
-              "tempo": "slow"
+              "label": "Tharikida Kidathaki (Full 8-Beat Cycle)",
+              "text": "തരി കിട കിട തകി",
+              "transliteration": "Tha-ri-ki-da  Ki-da-tha-ki",
+              "tempo": "slow",
+              "syllables": [
+                { "ml": "ത", "en": "Tha" },
+                { "ml": "രി", "en": "Ri" },
+                { "ml": "കി", "en": "Ki" },
+                { "ml": "ട", "en": "Da" },
+                { "ml": "കി", "en": "Ki" },
+                { "ml": "ട", "en": "Da" },
+                { "ml": "ത", "en": "Tha" },
+                { "ml": "കി", "en": "Ki" }
+              ]
             },
             {
-              "label": "With Continuity",
-              "text": "തക്കിട്ട തരികിട | തക്കിട്ട തരികിട",
-              "transliteration": "Thak-Kit-ta Ta-ri-ki-ta | Thak-Kit-ta Ta-ri-ki-ta",
+              "label": "Repeat Cycle (Continuous Flow)",
+              "text": "തരി കിട കിട തകി | തരി കിട കിട തകി",
+              "transliteration": "Tha-ri-ki-da Ki-da-tha-ki | Tha-ri-ki-da Ki-da-tha-ki",
               "tempo": "medium"
             }
-          ]
-        },
-        {
-          "id": "lesson-3",
-          "title": "Wrist Technique & Finger Control",
-          "malayalamTitle": "കൈത്തണ്ടയുടെ ചലനം",
-          "youtubeId": "REPLACE_WITH_YOUR_YOUTUBE_VIDEO_ID",
-          "description": "Master the circular wrist motion that gives Chenda its distinctive sound. Use the 0.5× slow-motion player to study the technique closely.",
-          "durationMinutes": 15,
-          "bpmRange": { "min": 50, "max": 90 },
-          "vaythari": [
+          ],
+          "rhythmPatterns": [
             {
-              "label": "Right-Hand Lead",
-              "text": "ദ്ദിം കിട",
-              "transliteration": "Ddim  Ki-ta",
-              "tempo": "slow"
-            },
-            {
-              "label": "Alternating Hands",
-              "text": "ദ്ദിം കിട തരിദ്ദ",
-              "transliteration": "Ddim Ki-ta  Ta-ri-dda",
-              "tempo": "medium"
+              "title": "Tharikida Kidathaki",
+              "subtitle": "Core 8-Syllable Cycle",
+              "cycleName": "8 BEAT CYCLE",
+              "beats": [
+                { "ml": "ത", "en": "Tha", "type": "Stick" },
+                { "ml": "രി", "en": "Ri", "type": "Hand/Tap" },
+                { "ml": "കി", "en": "Ki", "type": "Hand/Tap" },
+                { "ml": "ട", "en": "Da", "type": "Stick" },
+                { "ml": "കി", "en": "Ki", "type": "Hand/Tap" },
+                { "ml": "ട", "en": "Da", "type": "Stick" },
+                { "ml": "ത", "en": "Tha", "type": "Stick" },
+                { "ml": "കി", "en": "Ki", "type": "Hand/Tap" }
+              ],
+              "emphasis": "Keep every syllable even. Tha (beats 1 and 7) are the anchor points — make them slightly stronger.",
+              "targetSpeed": "Start at 60 BPM. Once clean, push to 100 BPM to feel the groove lock in."
             }
           ]
         }
       ]
-    },
-    {
-      "id": "shingari-level-1",
-      "title": "Shingari Level 1",
-      "malayalamTitle": "ശിങ്കാരി — ഒന്ന്",
-      "level": "Basics",
-      "color": "orange",
-      "lessons": [
-        {
-          "id": "lesson-1",
-          "title": "Shingari Thaalam — The Entry",
-          "malayalamTitle": "ശിങ്കാരി താളം",
-          "youtubeId": "REPLACE_WITH_YOUR_YOUTUBE_VIDEO_ID",
-          "description": "Learn the signature Shingari entry pattern played during the Melam procession. Focus on the rhythmic feel (laya) at 80 BPM.",
-          "durationMinutes": 20,
-          "bpmRange": { "min": 80, "max": 120 },
-          "vaythari": [
-            {
-              "label": "Entry Pattern",
-              "text": "തകജണു തകധിമി",
-              "transliteration": "Tha-Ka-Ja-Nu  Tha-Ka-Dhi-Mi",
-              "tempo": "medium"
-            },
-            {
-              "label": "Full Cycle",
-              "text": "തകജണു തകധിമി | തക്കിട്ട തരികിട",
-              "transliteration": "Tha-Ka-Ja-Nu Tha-Ka-Dhi-Mi | Thak-Kit-ta Ta-ri-ki-ta",
-              "tempo": "medium"
-            }
-          ]
-        },
-        {
-          "id": "lesson-2",
-          "title": "First Kaalathaalam — Kizha Kaalam",
-          "malayalamTitle": "കീഴ്ക്കാലം",
-          "youtubeId": "REPLACE_WITH_YOUR_YOUTUBE_VIDEO_ID",
-          "description": "Kizha Kaalam is the slow foundational tempo of the Melam. Learn to play at a steady 80 BPM with full control before speeding up.",
-          "durationMinutes": 25,
-          "bpmRange": { "min": 80, "max": 100 },
-          "vaythari": [
-            {
-              "label": "Kizha Kaalam Pattern",
-              "text": "തക്കിട്ട | തരികിട | ദ്ദിം കിട | തരിദ്ദ",
-              "transliteration": "Thak-Kit-ta | Ta-ri-ki-ta | Ddim Ki-ta | Ta-ri-dda",
-              "tempo": "slow"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "shingari-level-2",
-      "title": "Shingari Level 2",
-      "malayalamTitle": "ശിങ്കാരി — രണ്ട്",
-      "level": "Speed & Ennams",
-      "color": "red",
-      "lessons": []
-    },
-    {
-      "id": "performance",
-      "title": "Performance",
-      "malayalamTitle": "അവതരണം",
-      "level": "Kalasams",
-      "color": "purple",
-      "lessons": []
     }
   ]
 }
