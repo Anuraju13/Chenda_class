@@ -66,12 +66,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { moduleId, lessonId } = await params;
   const lesson = getLesson(moduleId, lessonId);
-  const module = getModule(moduleId);
+  const lessonModule = getModule(moduleId);
 
   if (!lesson) return { title: 'Lesson Not Found' };
 
   return {
-    title: `${lesson.title} — ${module?.title} | Chenda Class`,
+    title: `${lesson.title} — ${lessonModule?.title} | Chenda Class`,
     description: lesson.description,
   };
 }
