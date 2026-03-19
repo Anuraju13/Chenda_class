@@ -15,6 +15,8 @@ function extractYouTubeId(input: string): string {
     const url = new URL(input);
     // youtu.be short links: the path IS the ID
     if (url.hostname === 'youtu.be') return url.pathname.slice(1);
+    // YouTube Shorts: /shorts/VIDEO_ID
+    if (url.pathname.startsWith('/shorts/')) return url.pathname.slice(8);
     // Standard watch?v= URLs
     const v = url.searchParams.get('v');
     if (v) return v;

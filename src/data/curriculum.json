@@ -17,6 +17,17 @@
           "bpmRange": { "min": 60, "max": 80 },
           "vaythari": [
             {
+              "label": "Thaki-Ta (Basic 3-Beat)",
+              "text": "ത കി ട",
+              "transliteration": "Tha-Ki-Ta",
+              "tempo": "slow",
+              "syllables": [
+                { "ml": "ത", "en": "Tha" },
+                { "ml": "കി", "en": "Ki" },
+                { "ml": "ട", "en": "Ta" }
+              ]
+            },
+            {
               "label": "Single Strike",
               "text": "തക",
               "transliteration": "Tha-Ka",

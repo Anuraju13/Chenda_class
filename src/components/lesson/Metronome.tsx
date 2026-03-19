@@ -1,45 +1,34 @@
 /*
-  Metronome — "Shingari Tempo Master"
+  Metronome — "Shingari Tempo Master" (v4)
 
-  WHAT CHANGED FROM THE OLD VERSION:
-  ────────────────────────────────────
-  1. Sound: square wave at 880Hz (High A). Square waves have more harmonic content
-     than sine → sharper, more percussive "Tak" sound — closer to a real woodblock.
+  NEW IN THIS VERSION: syllable-linked beat display
+  ──────────────────────────────────────────────────
+  When a `syllables` prop is passed (from the lesson's vaythari), the 8 generic
+  dots are replaced with the actual rhythmic syllables as cards (ത, കി, ട).
+  Each card lights up amber when that syllable is the current beat — so students
+  can see exactly which syllable they should be striking at any moment.
 
-  2. Scheduler: requestAnimationFrame instead of setTimeout.
-     requestAnimationFrame syncs with the browser's repaint cycle (60fps).
-     This is better for the VISUAL beat dots — they update in sync with the screen.
-     The audio scheduling still uses AudioContext.currentTime (hardware clock),
-     so timing precision is unchanged.
+  If no syllables are provided, the component falls back to the original 8-dot display.
 
-  3. Beat visualiser: 8 dots, one glows amber + scales up for the current beat.
-     The eighth beat of Chempada tala is made visually distinct.
+  HOW THE CYCLE LENGTH WORKS:
+  ─────────────────────────────
+  The scheduler always ticks at BPM (one tick per beat). We track a running
+  `beatIndex` that increments every tick. The active slot is:
+    beatIndex % syllablesCountRef.current
+  where syllablesCountRef holds the syllable count (or 8 for dots).
+  Storing it in a ref means the scheduler picks up changes to the syllable list
+  without restarting — same pattern as bpmRef.
 
-  4. Controls: Rewind/FastForward (-5/+5 BPM) + Play/Square (start/stop).
-     Simpler and more finger-friendly than the previous slider + presets.
-
-  IMPROVEMENT OVER THE ORIGINAL CODE SHARED:
-  ────────────────────────────────────────────
-  The provided code re-created a new AudioContext on every BPM change (because
-  `bpm` was in the useEffect dependency array). AudioContexts are expensive browser
-  resources — browsers warn when you create too many.
-
-  Fix: BPM is tracked via `bpmRef`. The scheduler always reads `bpmRef.current`,
-  so BPM changes take effect on the next tick WITHOUT restarting the scheduler or
-  creating a new AudioContext.
-
-  webkitAudioContext:
-  ────────────────────
-  Older Safari versions use `window.webkitAudioContext` instead of `window.AudioContext`.
-  We declare it on `Window` so TypeScript doesn't complain.
+  When not playing, currentBeat = -1, so -1 % n = -1 in JS, which never equals
+  any valid index. Nothing is highlighted. Clean initial state.
 */
 
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Play, Square, FastForward, Rewind } from 'lucide-react';
+import { Play, Square, ChevronLeft, ChevronRight } from 'lucide-react';
+import type { VaythariSyllable } from '@/types/curriculum';
 
-// Tell TypeScript that older Safari exposes AudioContext under this vendor-prefixed name
 declare global {
   interface Window {
     webkitAudioContext?: typeof AudioContext;
@@ -50,36 +39,41 @@ interface MetronomeProps {
   defaultBpm?: number;
   minBpm?: number;
   maxBpm?: number;
+  // Optional: syllables from the lesson's vaythari (e.g. [{ml:"ത",en:"Tha"}, ...])
+  // When provided, replaces the 8-dot display with labelled syllable cards.
+  syllables?: VaythariSyllable[];
 }
 
-export function Metronome({ defaultBpm = 80, minBpm = 40, maxBpm = 200 }: MetronomeProps) {
+export function Metronome({ defaultBpm = 80, minBpm = 40, maxBpm = 200, syllables }: MetronomeProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [bpm, setBpm] = useState(defaultBpm);
-  const [currentBeat, setCurrentBeat] = useState(-1); // -1 = not playing, no beat highlighted
+  const [currentBeat, setCurrentBeat] = useState(-1); // -1 = not playing
 
-  // Refs that persist across renders without causing re-renders themselves
   const audioContextRef = useRef<AudioContext | null>(null);
   const animFrameRef = useRef<number | null>(null);
 
-  // KEY PATTERN: bpmRef mirrors the bpm state, but it's readable synchronously
-  // inside the scheduler closure. This means BPM changes are picked up on the
-  // very next tick — no need to restart the scheduler when BPM changes.
+  // bpmRef mirrors bpm state so the scheduler reads the latest BPM
+  // without needing to restart when the user changes BPM.
   const bpmRef = useRef(bpm);
-  bpmRef.current = bpm; // Always in sync with state
+  bpmRef.current = bpm;
+
+  // syllablesCountRef mirrors the syllable count so the scheduler uses
+  // the correct cycle length even if syllables prop changes.
+  const syllablesCountRef = useRef(syllables?.length ?? 8);
+  syllablesCountRef.current = syllables?.length ?? 8;
 
   // ─── Click sound generator ──────────────────────────────────────────────────
-  // Called ahead of time (scheduled for `time` in the future, not played right now).
-  // Square wave = richer harmonic content = sharper, more woodblock-like sound.
-  const playTakSound = (time: number) => {
+  // beatIdx 0 = downbeat (1000 Hz accent), all others = 800 Hz regular tick.
+  const playClick = (time: number, beatIdx: number) => {
     const ctx = audioContextRef.current!;
     const osc = ctx.createOscillator();
     const envelope = ctx.createGain();
 
-    osc.type = 'square';                   // Sharper than 'sine' — closer to a real Tak
-    osc.frequency.setValueAtTime(880, time); // High A note — clear and cutting
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(beatIdx === 0 ? 1000 : 800, time);
 
-    envelope.gain.setValueAtTime(0.2, time);
-    envelope.gain.exponentialRampToValueAtTime(0.001, time + 0.05); // 50ms decay
+    envelope.gain.setValueAtTime(0.1, time);
+    envelope.gain.exponentialRampToValueAtTime(0.001, time + 0.05);
 
     osc.connect(envelope);
     envelope.connect(ctx.destination);
@@ -91,50 +85,38 @@ export function Metronome({ defaultBpm = 80, minBpm = 40, maxBpm = 200 }: Metron
   // ─── Scheduler via requestAnimationFrame ────────────────────────────────────
   useEffect(() => {
     if (!isPlaying) {
-      // Stop: cancel pending animation frame, reset beat display
       if (animFrameRef.current !== null) cancelAnimationFrame(animFrameRef.current);
       setCurrentBeat(-1);
       return;
     }
 
-    // Create AudioContext lazily on first play (browser autoplay policy requires
-    // AudioContext to be created inside a user gesture handler)
     if (!audioContextRef.current) {
       audioContextRef.current = new (window.AudioContext || window.webkitAudioContext!)();
     }
-    // Resume in case the browser suspended the context (happens after inactivity)
     audioContextRef.current.resume();
 
     let nextTickTime = audioContextRef.current.currentTime;
     let beatIndex = 0;
 
     const scheduler = () => {
-      // Look-ahead window: 100ms.
-      // Schedule all beats that fall within the next 100ms.
-      // requestAnimationFrame runs ~60 times/sec (every ~16ms),
-      // so we always stay well ahead of playback.
       while (nextTickTime < audioContextRef.current!.currentTime + 0.1) {
-        playTakSound(nextTickTime);
-
-        // Advance by one beat interval using the CURRENT bpm (via ref)
-        // This is how BPM changes take effect immediately without restarting
+        // Use syllablesCountRef so the cycle matches however many syllables
+        // (or 8 for the default dots) are currently displayed.
+        const beatIdx = beatIndex % syllablesCountRef.current;
+        playClick(nextTickTime, beatIdx);
         nextTickTime += 60.0 / bpmRef.current;
-
-        // Update beat display — cycle through 0–7 (Chempada tala = 8 beats)
-        setCurrentBeat(beatIndex % 8);
+        setCurrentBeat(beatIdx);
         beatIndex++;
       }
-
       animFrameRef.current = requestAnimationFrame(scheduler);
     };
 
     scheduler();
 
-    // Cleanup: runs when isPlaying becomes false or component unmounts
     return () => {
       if (animFrameRef.current !== null) cancelAnimationFrame(animFrameRef.current);
     };
-  }, [isPlaying]); // BPM changes are handled via bpmRef — no restart needed
+  }, [isPlaying]);
 
   // ─── Helpers ────────────────────────────────────────────────────────────────
   const adjustBpm = (delta: number) => {
@@ -143,84 +125,100 @@ export function Metronome({ defaultBpm = 80, minBpm = 40, maxBpm = 200 }: Metron
 
   // ─── Render ─────────────────────────────────────────────────────────────────
   return (
-    <div className="rounded-3xl border-2 border-amber-600 bg-zinc-900 p-8 text-center shadow-xl">
+    <div className="bg-[#12141d] p-8 rounded-[40px] border-2 border-amber-600/30 w-full text-center shadow-2xl">
 
-      <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-amber-500">
+      <h2 className="text-amber-500 font-bold text-xs tracking-[0.3em] uppercase mb-8">
         Shingari Tempo Master
-      </h3>
+      </h2>
 
       {/* ── BPM Display ───────────────────────────────────────────────────── */}
-      {/*
-        font-mono → monospace so digits don't shift width (120 vs 80 have same visual footprint)
-        tracking-tighter → tighter letter spacing looks better at large sizes
-      */}
-      <div className="mb-6 font-mono text-6xl font-black tracking-tighter text-white">
-        {bpm}{' '}
-        <span className="text-xs font-normal text-zinc-500">BPM</span>
+      <div className="relative inline-block mb-10">
+        <div className="text-8xl font-black text-white tracking-tighter">{bpm}</div>
+        <span className="absolute bottom-4 -right-10 text-[10px] text-zinc-600 font-bold">BPM</span>
       </div>
 
       {/* ── Beat Visualiser ───────────────────────────────────────────────── */}
       {/*
-        8 dots = 8-beat Chempada tala cycle.
-        The active dot: glows amber, scales up 125%, and has a box-shadow glow.
-        shadow-[0_0_10px_#f59e0b] is a Tailwind arbitrary value — custom CSS shadow
-        using the amber-500 hex color (#f59e0b) to create a glow effect.
-        transition-all duration-100 → smooth but fast transition (too slow looks laggy)
+        Two modes:
+        A) syllables provided → labelled cards, one per syllable, cycling through them
+        B) no syllables → 8 generic amber dots (Chempada tala)
       */}
-      <div className="mb-8 flex justify-center gap-2">
-        {[...Array(8)].map((_, i) => (
-          <div
-            key={i}
-            className={`h-3 w-3 rounded-full transition-all duration-100 ${
-              i === currentBeat
-                ? 'scale-125 bg-amber-500 shadow-[0_0_10px_#f59e0b]'
-                : 'bg-zinc-700'
-            }`}
-          />
-        ))}
-      </div>
+      {syllables && syllables.length > 0 ? (
+        /*
+          Syllable card mode.
+          Each card shows the Malayalam character (large) + transliteration (small below).
+          Active card: amber background highlight + slight scale-up.
+          Inactive cards: dimmed to 40% opacity so the active one stands out clearly.
+          font-malayalam → Manjari font for correct Malayalam glyph rendering.
+        */
+        <div className="flex justify-center gap-3 mb-12 flex-wrap">
+          {syllables.map((syl, i) => (
+            <div
+              key={i}
+              className={`flex flex-col items-center px-4 py-3 rounded-2xl border transition-all duration-75 ${
+                i === currentBeat
+                  ? 'bg-amber-500/20 border-amber-500/70 scale-110 shadow-[0_0_14px_rgba(245,158,11,0.35)]'
+                  : 'bg-zinc-800/40 border-zinc-700/50 opacity-40'
+              }`}
+            >
+              <span className="font-malayalam text-3xl font-bold text-amber-100 leading-tight">
+                {syl.ml}
+              </span>
+              <span className="mt-1 font-mono text-[9px] uppercase tracking-widest text-zinc-500">
+                {syl.en}
+              </span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        /* Dot mode — 8 dots for Chempada tala */
+        <div className="flex justify-center gap-3 mb-12">
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={i}
+              className={`h-2.5 w-2.5 rounded-full transition-all duration-75 ${
+                i === currentBeat
+                  ? 'bg-amber-500 shadow-[0_0_12px_#f59e0b]'
+                  : 'bg-zinc-800'
+              }`}
+            />
+          ))}
+        </div>
+      )}
 
       {/* ── Controls ──────────────────────────────────────────────────────── */}
-      <div className="mb-8 flex items-center justify-center gap-6">
+      <div className="flex items-center justify-between px-4">
 
-        {/* -5 BPM */}
         <button
           onClick={() => adjustBpm(-5)}
-          className="rounded-full bg-zinc-800 p-3 text-white hover:bg-zinc-700 active:scale-95"
+          className="p-4 bg-zinc-900 rounded-full text-zinc-400 hover:text-white border border-zinc-800 transition-all active:scale-90"
           aria-label="Decrease BPM by 5"
         >
-          <Rewind size={24} />
+          <ChevronLeft size={32} />
         </button>
 
-        {/* Play / Stop — large central button */}
         <button
           onClick={() => setIsPlaying((p) => !p)}
-          className="rounded-full bg-amber-600 p-6 text-white transition-transform hover:bg-amber-500 active:scale-95"
+          className="h-24 w-24 bg-amber-600 rounded-full flex items-center justify-center text-white shadow-lg hover:bg-amber-500 transition-transform active:scale-95"
           aria-label={isPlaying ? 'Stop metronome' : 'Start metronome'}
         >
-          {/*
-            Square icon with fill="white" → solid filled square (stop symbol).
-            Play icon with fill="white" → solid filled triangle (play symbol).
-            Lucide icons are SVG outlines by default; fill="white" makes them solid.
-          */}
           {isPlaying
-            ? <Square size={32} fill="white" />
-            : <Play size={32} fill="white" />
+            ? <Square size={36} fill="white" />
+            : <Play size={40} className="ml-2" fill="white" />
           }
         </button>
 
-        {/* +5 BPM */}
         <button
           onClick={() => adjustBpm(5)}
-          className="rounded-full bg-zinc-800 p-3 text-white hover:bg-zinc-700 active:scale-95"
+          className="p-4 bg-zinc-900 rounded-full text-zinc-400 hover:text-white border border-zinc-800 transition-all active:scale-90"
           aria-label="Increase BPM by 5"
         >
-          <FastForward size={24} />
+          <ChevronRight size={32} />
         </button>
 
       </div>
 
-      <p className="text-xs italic text-zinc-500">
+      <p className="mt-10 text-zinc-600 text-[11px] italic uppercase tracking-wider">
         Adjust speed to match your group&apos;s progress.
       </p>
 

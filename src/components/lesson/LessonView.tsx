@@ -94,19 +94,27 @@ export function LessonView({ lesson }: LessonViewProps) {
       */}
       <div className="space-y-6">
 
-        {/* 1. YouTube Player */}
-        <YouTubePlayer playerId={PLAYER_ID} />
+        {/* 1. YouTube Player — key forces a fresh div when lesson changes,
+              preventing React's DOM reconciler from colliding with YouTube's
+              iframe replacement of the original div. */}
+        <YouTubePlayer playerId={PLAYER_ID} key={lesson.id} />
 
         {/* 2. Playback Speed Controller */}
         <PlaybackController onRateChange={handleRateChange} currentRate={currentRate} />
 
         {/* 3. Vaythari Card + Metronome — side by side on large screens */}
+        {/*
+          We look for the first vaythari item that has individual syllables defined.
+          If found, those syllables are passed to the Metronome so it can show them
+          as beat cards instead of generic dots — the two panels stay in sync visually.
+        */}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <VaythariCard items={lesson.vaythari} />
           <Metronome
             defaultBpm={lesson.bpmRange.min}
             minBpm={60}
             maxBpm={160}
+            syllables={lesson.vaythari.find(v => v.syllables && v.syllables.length > 0)?.syllables}
           />
         </div>
 

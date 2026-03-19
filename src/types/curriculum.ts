@@ -18,11 +18,18 @@ export interface RhythmPattern {
 
 // ─── Vaythari (rhythmic chant) ────────────────────────────────────────────────
 // Each lesson can have multiple vaythari patterns, e.g. slow version + fast version
+export interface VaythariSyllable {
+  ml: string; // Malayalam syllable, e.g. "ത"
+  en: string; // Latin transliteration, e.g. "Tha"
+}
+
 export interface VaythariItem {
   label: string;          // e.g. "Basic Pattern", "Kizha Kaalam"
   text: string;           // Malayalam Unicode, e.g. "തക്കിട്ട തരികിട"
   transliteration: string; // Latin phonetics for non-Malayalam readers
   tempo: 'slow' | 'medium' | 'fast';
+  // Optional: individual syllables for the metronome to step through beat-by-beat
+  syllables?: VaythariSyllable[];
 }
 
 // ─── BPM Range ────────────────────────────────────────────────────────────────
