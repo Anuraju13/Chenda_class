@@ -162,8 +162,7 @@ export function Sidebar({ curriculum, activeModuleId, activeLessonId }: SidebarP
 
       {/* ── Footer ────────────────────────────────────────────────────────── */}
       <div className="border-t border-slate-800 px-5 py-4">
-        <p className="text-xs text-slate-600">Melbourne Chenda Sangham</p>
-        <p className="text-xs text-slate-700">കേരളീയ ചെണ്ടവിദ്യ</p>
+        <p className="text-xs text-slate-600">St Thomas Men's Chenda</p>
       </div>
 
     </div>
