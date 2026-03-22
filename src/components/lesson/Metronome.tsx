@@ -161,14 +161,6 @@ export function Metronome({ defaultBpm = 80, minBpm = 40, maxBpm = 200, syllable
                   : 'bg-zinc-800/40 border-zinc-700/50 opacity-40'
               }`}
             >
-              {/* Hand indicator — R (amber) = right stick, L (blue) = left tap */}
-              {syl.hand && (
-                <span className={`mb-1 font-mono text-[9px] font-black tracking-widest ${
-                  syl.hand === 'R' ? 'text-amber-500' : 'text-blue-400'
-                }`}>
-                  {syl.hand}
-                </span>
-              )}
               <span className="font-malayalam text-3xl font-bold text-amber-100 leading-tight">
                 {syl.ml}
               </span>
