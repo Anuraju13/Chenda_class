@@ -22,9 +22,9 @@
               "transliteration": "Tha-Ki-Ta",
               "tempo": "slow",
               "syllables": [
-                { "ml": "ത", "en": "Tha" },
-                { "ml": "കി", "en": "Ki" },
-                { "ml": "ട", "en": "Ta" }
+                { "ml": "ത", "en": "Tha", "hand": "R" },
+                { "ml": "കി", "en": "Ki",  "hand": "L" },
+                { "ml": "ട",  "en": "Ta",  "hand": "R" }
               ]
             },
             {
@@ -76,14 +76,14 @@
               "transliteration": "Tha-ri-ki-da  Ki-da-tha-ki",
               "tempo": "slow",
               "syllables": [
-                { "ml": "ത", "en": "Tha" },
-                { "ml": "രി", "en": "Ri" },
-                { "ml": "കി", "en": "Ki" },
-                { "ml": "ട", "en": "Da" },
-                { "ml": "കി", "en": "Ki" },
-                { "ml": "ട", "en": "Da" },
-                { "ml": "ത", "en": "Tha" },
-                { "ml": "കി", "en": "Ki" }
+                { "ml": "ത", "en": "Tha", "hand": "R" },
+                { "ml": "രി", "en": "Ri",  "hand": "L" },
+                { "ml": "കി", "en": "Ki",  "hand": "L" },
+                { "ml": "ട",  "en": "Da",  "hand": "R" },
+                { "ml": "കി", "en": "Ki",  "hand": "L" },
+                { "ml": "ട",  "en": "Da",  "hand": "R" },
+                { "ml": "ത", "en": "Tha", "hand": "R" },
+                { "ml": "കി", "en": "Ki",  "hand": "L" }
               ]
             },
             {

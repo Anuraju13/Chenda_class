@@ -19,8 +19,9 @@ export interface RhythmPattern {
 // ─── Vaythari (rhythmic chant) ────────────────────────────────────────────────
 // Each lesson can have multiple vaythari patterns, e.g. slow version + fast version
 export interface VaythariSyllable {
-  ml: string; // Malayalam syllable, e.g. "ത"
-  en: string; // Latin transliteration, e.g. "Tha"
+  ml: string;          // Malayalam syllable, e.g. "ത"
+  en: string;          // Latin transliteration, e.g. "Tha"
+  hand?: 'R' | 'L';   // Which hand plays this syllable: R = right stick, L = left tap
 }
 
 export interface VaythariItem {
